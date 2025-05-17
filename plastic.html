@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ocean Cleanup Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jolly+Lodger&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00a8ff;
+      --primary-dark: #0097e6;
+      --secondary: #0c2461;
+      --light: #f5f6fa;
+      --accent: #4cd137;
+      --accent-dark: #3fa12c;
+      --dark: #0a1a3a;
+      --jolly: "Jolly Lodger", cursive;
+      --sans: "Open Sans", sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--dark);
+      color: white;
+      overflow: hidden;
+    }
+
+    #fullpage-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: url("https://wallpaper.dog/large/10908806.jpg") center / cover no-repeat;
+      filter: brightness(0.4);
+    }
+
+    .game-area {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      border: 4px solid var(--primary);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .control-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      z-index: 100;
+    }
+
+    .btn {
+      background-color: var(--accent);
+      color: var(--dark);
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-family: var(--jolly);
+      font-size: 1.2rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-dark);
+      transform: translateY(-2px);
+    }
+
+    .message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: white;
+      display: none;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div id="fullpage-bg"></div>
+  
+  <div class="game-area">
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+  </div>
+
+  <div class="control-buttons">
+    <button class="btn" id="startBtn">Start Game</button>
+    <button class="btn" id="pauseBtn" style="display:none;">Pause Game</button>
+    <button class="btn" id="resumeBtn" style="display:none;">Resume Game</button>
+    <button class="btn" id="exitBtn">Exit</button>
+  </div>
+
+  <div class="message" id="message">One aquatic life saved!</div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const player = { x: 50, y: 200, width: 50, height: 50, color: "#00a8ff", speed: 5 };
+    const trashItems = [];
+    let score = 0;
+    let gameRunning = false;
+    let gamePaused = false;
+    let keys = {};
+
+    // Draw player on the canvas
+    function drawPlayer() {
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    // Draw trash items (Plastic or Fish)
+    function drawTrash() {
+      trashItems.forEach((trash, i) => {
+        ctx.fillStyle = trash.type === 'plastic' ? '#e74c3c' : '#4cd137'; // Red for plastic, Green for fish
+        ctx.fillRect(trash.x, trash.y, trash.size, trash.size);
+        
+        // Display label for the type of object
+        ctx.font = "14px var(--sans)";
+        ctx.fillStyle = "white";
+        ctx.fillText(trash.type === 'plastic' ? "Plastic" : "Fish", trash.x, trash.y - 10);
+        
+        trash.x -= trash.speed;
+
+        // Check collision with player
+        if (
+          player.x < trash.x + trash.size &&
+          player.x + player.width > trash.x &&
+          player.y < trash.y + trash.size &&
+          player.y + player.height > trash.y
+        ) {
+          if (trash.type === 'plastic') {
+            score += 1;  // Only score for collecting plastic
+            displayMessage("One aquatic life saved!");
+          } else if (trash.type === 'fish') {
+            score -= 1;  // Decrease score for hitting fish
+          }
+          trashItems.splice(i, 1);
+        }
+      });
+    }
+
+    // Spawn trash (plastic or fish) randomly
+    function spawnTrash() {
+      const size = 30;
+      const type = Math.random() < 0.5 ? 'plastic' : 'fish'; // Randomly choose between plastic and fish
+      trashItems.push({
+        x: canvas.width,
+        y: Math.random() * (canvas.height - size),
+        size,
+        speed: 3,
+        type
+      });
+    }
+
+    // Draw score on the screen
+    function drawScore() {
+      ctx.fillStyle = "white";
+      ctx.font = "20px var(--sans)";
+      ctx.fillText("Score: " + score, 10, 20);
+    }
+
+    // Listen for key events for player movement
+    window.addEventListener("keydown", (e) => keys[e.key] = true);
+    window.addEventListener("keyup", (e) => keys[e.key] = false);
+
+    // Update player position
+    function updatePlayer() {
+      if (keys["ArrowUp"] && player.y > 0) player.y -= player.speed;
+      if (keys["ArrowDown"] && player.y + player.height < canvas.height) player.y += player.speed;
+    }
+
+    // Display a message in the center of the canvas
+    function displayMessage(message) {
+      const messageDiv = document.getElementById("message");
+      messageDiv.innerText = message;
+      messageDiv.style.display = "block";
+      setTimeout(() => {
+        messageDiv.style.display = "none";
+      }, 2000);
+    }
+
+    // Main game loop
+    function gameLoop() {
+      if (gamePaused) return; // If game is paused, don't run the game loop
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updatePlayer();
+      drawPlayer();
+      drawTrash();
+      drawScore();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game
+    function startGame() {
+      score = 0;
+      trashItems.length = 0;
+      gameRunning = true;
+      gamePaused = false;
+      setInterval(spawnTrash, 1500);
+      gameLoop();
+    }
+
+    // Pause the game
+    function pauseGame() {
+      gamePaused = true;
+    }
+
+    // Resume the game
+    function resumeGame() {
+      gamePaused = false;
+      gameLoop();
+    }
+
+    // Exit the game
+    function exitGame() {
+      alert("Game Over! Your final score is: " + score);
+      location.reload(); // Reload the page to restart the game
+    }
+
+    // Button events
+    document.getElementById("startBtn").addEventListener("click", () => {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("pauseBtn").style.display = "inline-block";
+      document.getElementById("exitBtn").style.display = "inline-block";
+      startGame();
+    });
+
+    document.getElementById("pauseBtn").addEventListener("click", pauseGame);
+    document.getElementById("resumeBtn").addEventListener("click", resumeGame);
+    document.getElementById("exitBtn").addEventListener("click", exitGame);
+  </script>
+</body>
+</html>

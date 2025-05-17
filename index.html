@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OceanLife - Protect Marine Biodiversity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jolly+Lodger&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Full-page background -->
+    <div id="fullpage-bg"></div>
+
+    <!-- Header -->
+    <header id="main-header">
+        <div class="logo">Samudhra<span>Vani</span></div>
+        <nav>
+            <button class="mobile-menu-btn" id="menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul id="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#quiz">Quiz</a></li>
+                <li><a href="#species">Species</a></li>
+                <li><a href="#volunteer">Volunteer</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Protect Our Blue Planet</h1>
+            <p>Discover the wonders of marine life and learn how you can help preserve our oceans for future generations. Every action counts in the fight to protect biodiversity below water.</p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#volunteer" class="btn">Join Us</a>
+                <a href="#news" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="section" id="news">
+        <h2 class="section-title">Latest Ocean News</h2>
+        <p class="section-description">Stay updated with the most recent discoveries and conservation efforts in marine biology and ocean protection. Our system automatically fetches news from trusted marine conservation organizations.</p>
+
+        <div class="slideshow-container">
+            <div class="slideshow" id="auto-news-slideshow">
+                <!-- News slides will be inserted here automatically -->
+                <div class="slide placeholder">
+                    <div class="slide-img" style="background:#0c2461;"></div>
+                    <div class="slide-content">
+                        <h3>Loading latest news...</h3>
+                        <p>Our system is fetching the most recent ocean conservation updates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- News source information -->
+        <div id="news-source-info"></div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="section games-section" id="games">
+        <h2 class="section-title">Ocean Games</h2>
+        <p class="section-description">Learn about marine conservation through fun and interactive games. Play now to test your knowledge!</p>
+        
+        <div class="slideshow-container">
+            <div class="slideshow">
+                <!-- Game 1 -->
+                <div class="slide">
+                    <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa" alt="Ocean Cleanup Game" class="slide-img">
+                    <div class="slide-content">
+                        <h3>Plastic Cleanup</h3>
+                        <p>Help remove plastic waste from the ocean in this action game</p>
+                        <a href="plastic.html" class="btn">Play Now</a>
+                    </div>
+                </div>
+                
+                <!-- Game 2 -->
+                <div class="slide">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5" alt="Coral Reef Game" class="slide-img">
+                    <div class="slide-content">
+                        <h3>Reef Builder</h3>
+                        <p>Grow and protect a coral reef ecosystem</p>
+                        <a href="#" class="btn">Play Now</a>
+                    </div>
+                </div>
+                
+                <!-- Game 3 -->
+                <div class="slide">
+                    <img src="https://images.unsplash.com/photo-1524704796725-9fc3044a58b2" alt="Marine Life Game" class="slide-img">
+                    <div class="slide-content">
+                        <h3>Species Explorer</h3>
+                        <p>Discover and identify marine creatures</p>
+                        <a href="#" class="btn">Play Now</a>
+                    </div>
+                </div>
+                
+                <!-- Game 4 -->
+                <div class="slide">
+                    <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0" alt="Whale Migration Game" class="slide-img">
+                    <div class="slide-content">
+                        <h3>Whale Journey</h3>
+                        <p>Navigate whales through their migration routes</p>
+                        <a href="#" class="btn">Play Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="section quiz-section" id="quiz">
+        <h2 class="section-title">Ocean Quiz</h2>
+        <p class="section-description">Test your knowledge about marine life and conservation efforts with our interactive quiz.</p>
+        
+        <div class="quiz-container" id="auto-quiz-container">
+            <!-- Quiz questions will be inserted here automatically -->
+            <div class="quiz-card placeholder">
+                <div class="quiz-question">Loading quiz questions...</div>
+                <div class="quiz-options">
+                    <div class="quiz-option">Please wait</div>
+                    <div class="quiz-option">While we generate</div>
+                    <div class="quiz-option">New questions</div>
+                    <div class="quiz-option">About ocean life</div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <button id="check-answers" class="btn">Check Answers</button>
+            <button id="refresh-quiz" class="btn btn-outline" onclick="loadAutoQuiz()">
+                <i class="fas fa-sync-alt"></i> New Questions
+            </button>
+        </div>
+    </section>
+
+    <!-- Aquatic Species Section (UPDATED) -->
+    <section class="section species-section" id="species">
+        <h2 class="section-title">Aquatic Species</h2>
+        <p class="section-description">Explore the diverse marine species that inhabit our oceans and learn about their conservation status.</p>
+        
+        <!-- Species count and information -->
+        <div id="species-count"></div>
+        
+        <!-- Species search and filter -->
+        <div class="species-controls">
+            <div class="species-search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="species-search" placeholder="Search species...">
+            </div>
+            <select id="species-filter">
+                <option value="all">All Categories</option>
+                <!-- Categories will be populated by JavaScript -->
+            </select>
+        </div>
+        
+        <!-- Species grid -->
+        <div class="species-grid" id="species-grid">
+            <!-- Species cards will be inserted here by JavaScript -->
+        </div>
+        
+        <!-- Load more button -->
+        <div class="load-more-container">
+            <button id="load-more-species" class="btn">
+                <i class="fas fa-plus-circle"></i> Load More Species
+            </button>
+        </div>
+    </section>
+
+    <!-- Volunteer Section -->
+    <section class="volunteer-section" id="volunteer">
+        <h2 class="section-title">Become a Volunteer</h2>
+        <p class="section-description">Join our community of ocean protectors and make a difference today!</p>
+        
+        <form class="volunteer-form" id="volunteer-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="interests">Areas of Interest</label>
+                <select id="interests" class="form-control" multiple>
+                    <option value="beach-cleanup">Beach Cleanups</option>
+                    <option value="education">Education & Outreach</option>
+                    <option value="research">Research Assistance</option>
+                    <option value="fundraising">Fundraising</option>
+                    <option value="diving">Scuba Diving Projects</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="experience">Relevant Experience</label>
+                <textarea id="experience" class="form-control"></textarea>
+            </div>
+            
+            <div class="form-group" style="margin-top: 30px;">
+                <button type="submit" class="btn" style="width: 100%;">Submit Application</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column footer-about">
+                <h3>OceanLife</h3>
+                <p>We are a non-profit organization dedicated to protecting marine biodiversity through education, conservation, and community engagement.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#quiz">Quiz</a></li>
+                    <li><a href="#species">Species</a></li>
+                    <li><a href="#volunteer">Volunteer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Marine Conservation</a></li>
+                    <li><a href="#">Research Papers</a></li>
+                    <li><a href="#">Educational Materials</a></li>
+                    <li><a href="#">Volunteer Opportunities</a></li>
+                    <li><a href="#">Donate</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter for the latest updates on marine conservation.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+                
+                <h3 style="margin-top: 30px;">Contact Us</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Ocean Ave, Marine City</li>
+                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                    <li><i class="fas fa-envelope"></i> info@oceanlife.org</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 OceanLife. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
